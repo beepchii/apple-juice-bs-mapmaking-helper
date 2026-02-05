@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Apple Juice</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Apple Juice</h1>
+  <p>Your Brawl Stars Mapmaking Helper!</p>
+
+  <input type="file" id="mapInput">
+  <select id="mode">
+    <option>Gem Grab</option>
+    <option>Brawl Ball</option>
+    <option>Heist</option>
+    <option>Bounty</option>
+    <option>Knockout</option>
+    <option>Hot Zone</option>
+    <option>Wipeout</option>
+  </select>
+
+  <button onclick="getFeedback()">Feedback</button>
+
+  <pre id="output"></pre>
+
+<script>
+async function getFeedback(){
+  const file = document.getElementById("mapInput").files[0];
+  const mode = document.getElementById("mode").value;
+
+  const formData = new FormData();
+  formData.append("map", file);
+  formData.append("mode", mode);
+
+  document.getElementById("output").textContent = "Analyzing...";
+
+  const res = await fetch("/feedback", { method:"POST", body: formData });
+  const data = await res.json();
+
+  document.getElementById("output").textContent = data.feedback;
+}
+</script>
+
+</body>
+</html>
